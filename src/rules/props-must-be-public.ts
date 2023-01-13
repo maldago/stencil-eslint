@@ -19,17 +19,19 @@ const rule: Rule.RuleModule = {
     const parserServices = context.parserServices;
     return {
       ...stencil.rules,
-      'ClassProperty': (node: any) => {
-        if (stencil.isComponent() && getDecorator(node, 'Prop')) {
-          const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node) as ts.Node;
+      PropertyDefinition: (node: any) => {
+        if (stencil.isComponent() && getDecorator(node, "Prop")) {
+          const originalNode = parserServices.esTreeNodeToTSNodeMap.get(
+            node
+          ) as ts.Node;
           if (isPrivate(originalNode)) {
             context.report({
               node: node,
-              message: `Class properties decorated with @Prop() cannot be private nor protected`
+              message: `Class properties decorated with @Prop() cannot be private nor protected`,
             });
           }
         }
-      }
+      },
     };
   }
 };

@@ -27,10 +27,15 @@ const rule: Rule.RuleModule = {
 
     return {
       ...stencil.rules,
-      'ClassProperty > Decorator[expression.callee.name=Element]': (node: any) => {
+      "PropertyDefinition > Decorator[expression.callee.name=Element]": (
+        node: any
+      ) => {
         if (stencil.isComponent()) {
           const tagType = getType(node.parent);
-          const component = getDecorator(node.parent.parent.parent, 'Component');
+          const component = getDecorator(
+            node.parent.parent.parent,
+            "Component"
+          );
           const [opts] = parseDecorator(component);
           if (!opts || !opts.tag) {
             return;
@@ -42,12 +47,15 @@ const rule: Rule.RuleModule = {
               node: node.parent.typeAnnotation,
               message: `@Element type is not matching tag for component (${parsedTag})`,
               fix(fixer) {
-                return fixer.replaceText(node.parent.typeAnnotation.typeAnnotation, parsedTag);
-              }
+                return fixer.replaceText(
+                  node.parent.typeAnnotation.typeAnnotation,
+                  parsedTag
+                );
+              },
             });
           }
         }
-      }
+      },
     };
   }
 };

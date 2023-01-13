@@ -44,17 +44,18 @@ const rule: Rule.RuleModule = {
     }
 
     return {
-      'ClassDeclaration': stencil.rules.ClassDeclaration,
-      'ClassProperty > Decorator[expression.callee.name=Prop]': getVars,
-      'ClassProperty > Decorator[expression.callee.name=State]': getVars,
-      'MethodDefinition[kind=method] > Decorator[expression.callee.name=Watch]': checkWatch,
-      'ClassDeclaration:exit': (node: any) => {
+      ClassDeclaration: stencil.rules.ClassDeclaration,
+      "PropertyDefinition > Decorator[expression.callee.name=Prop]": getVars,
+      "PropertyDefinition > Decorator[expression.callee.name=State]": getVars,
+      "MethodDefinition[kind=method] > Decorator[expression.callee.name=Watch]":
+        checkWatch,
+      "ClassDeclaration:exit": (node: any) => {
         if (!stencil.isComponent()) {
           return;
         }
-        stencil.rules['ClassDeclaration:exit'](node);
+        stencil.rules["ClassDeclaration:exit"](node);
         varsList.clear();
-      }
+      },
     };
   }
 };
